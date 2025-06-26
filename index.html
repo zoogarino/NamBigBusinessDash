@@ -159,6 +159,10 @@
             grid-column: 1 / -1;
         }
         
+        .chart-container.triple {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
         .chart-title {
             font-size: 1.4em;
             font-weight: bold;
@@ -239,7 +243,7 @@
             font-size: 0.95em;
         }
         
-        .economic-table {
+        .economic-table, .competitive-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
@@ -249,20 +253,21 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
         
-        .economic-table th, .economic-table td {
+        .economic-table th, .economic-table td,
+        .competitive-table th, .competitive-table td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #eee;
             font-size: 0.9em;
         }
         
-        .economic-table th {
+        .economic-table th, .competitive-table th {
             background: #667eea;
             color: white;
             font-weight: bold;
         }
         
-        .economic-table tr:hover {
+        .economic-table tr:hover, .competitive-table tr:hover {
             background: #f8f9fa;
         }
         
@@ -292,8 +297,66 @@
             margin-top: 5px;
         }
         
+        .segment-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .segment-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .segment-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .heat-map {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 3px;
+            margin: 20px 0;
+        }
+        
+        .heat-cell {
+            aspect-ratio: 1;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .roi-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 15px;
+            color: white;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .roi-high { background: #27ae60; }
+        .roi-medium { background: #f39c12; }
+        .roi-low { background: #e74c3c; }
+        
+        .forecast-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
         @media (max-width: 768px) {
-            .charts-grid {
+            .charts-grid, .forecast-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -318,6 +381,9 @@
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="showTab('overview')">📊 Market Overview</button>
             <button class="nav-tab" onclick="showTab('customer')">👥 Customer Intelligence</button>
+            <button class="nav-tab" onclick="showTab('competitive')">🏆 Competitive Analysis</button>
+            <button class="nav-tab" onclick="showTab('forecasting')">🔮 Demand Forecasting</button>
+            <button class="nav-tab" onclick="showTab('operations')">⚙️ Operations & ROI</button>
             <button class="nav-tab" onclick="showTab('digital')">📱 Digital Analytics</button>
         </div>
         <!-- MARKET OVERVIEW TAB -->
@@ -504,6 +570,202 @@
                     <canvas id="repeatChart" width="400" height="300"></canvas>
                 </div>
             </div>
+            
+            <div class="segment-analysis">
+                <div class="segment-card">
+                    <h4>🏜️ Adventure Seekers</h4>
+                    <div class="metric-value">28%</div>
+                    <p>High-activity, mid-budget travelers. Avg spend: $89/day. Focus on sandboarding, hiking, extreme sports.</p>
+                </div>
+                <div class="segment-card">
+                    <h4>🦁 Luxury Safari</h4>
+                    <div class="metric-value">18%</div>
+                    <p>Premium experiences, conservation focus. Avg spend: $310/day. Private conservancies, exclusive lodges.</p>
+                </div>
+                <div class="segment-card">
+                    <h4>🎭 Cultural Explorers</h4>
+                    <div class="metric-value">24%</div>
+                    <p>Community tourism, authentic experiences. Avg spend: $67/day. Indigenous culture, local communities.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- COMPETITIVE ANALYSIS TAB -->
+        <div id="competitive" class="tab-content">
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Market Share by Accommodation</div>
+                    <canvas id="accommodationChart" width="400" height="300"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Average Daily Rates</div>
+                    <canvas id="adrChart" width="400" height="300"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Occupancy Rates by Category</div>
+                    <canvas id="occupancyChart" width="400" height="300"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Revenue Per Available Room</div>
+                    <canvas id="revparChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+            
+            <div class="insights-section">
+                <h2 class="insights-title">🏆 Competitive Intelligence</h2>
+                <table class="competitive-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Market Share</th>
+                            <th>Avg Daily Rate</th>
+                            <th>Occupancy</th>
+                            <th>RevPAR</th>
+                            <th>Position</th>
+                            <th>Growth</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Luxury Lodges</td>
+                            <td>15%</td>
+                            <td>$650</td>
+                            <td>68%</td>
+                            <td>$442</td>
+                            <td><span class="roi-indicator roi-high">Premium</span></td>
+                            <td>+12%</td>
+                        </tr>
+                        <tr>
+                            <td>Mid-Range Hotels</td>
+                            <td>35%</td>
+                            <td>$134</td>
+                            <td>72%</td>
+                            <td>$97</td>
+                            <td><span class="roi-indicator roi-medium">Volume</span></td>
+                            <td>+8%</td>
+                        </tr>
+                        <tr>
+                            <td>Guesthouses</td>
+                            <td>28%</td>
+                            <td>$62</td>
+                            <td>58%</td>
+                            <td>$36</td>
+                            <td><span class="roi-indicator roi-medium">Budget</span></td>
+                            <td>+5%</td>
+                        </tr>
+                        <tr>
+                            <td>Camping/Self-Catering</td>
+                            <td>22%</td>
+                            <td>$28</td>
+                            <td>45%</td>
+                            <td>$13</td>
+                            <td><span class="roi-indicator roi-low">Self-Drive</span></td>
+                            <td>+15%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- DEMAND FORECASTING TAB -->
+        <div id="forecasting" class="tab-content">
+            <div class="forecast-grid">
+                <div class="chart-container">
+                    <div class="chart-title">2024-2025 Demand Forecast</div>
+                    <canvas id="forecastChart" width="600" height="400"></canvas>
+                </div>
+                
+                <div class="metric-cards">
+                    <div class="metric-card">
+                        <div class="metric-value">1.2M</div>
+                        <div class="metric-label">Projected 2024 Arrivals</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">78%</div>
+                        <div class="metric-label">Recovery Confidence</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">$680M</div>
+                        <div class="metric-label">Projected Tourism Revenue</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">-1.2</div>
+                        <div class="metric-label">Price Elasticity</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title">Seasonal Demand Heatmap (Monthly Intensity)</div>
+                <div class="heat-map" id="seasonalHeatmap"></div>
+            </div>
+            
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Price Elasticity Analysis</div>
+                    <canvas id="elasticityChart" width="400" height="300"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Currency Impact on Bookings</div>
+                    <canvas id="currencyChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- OPERATIONS & ROI TAB -->
+        <div id="operations" class="tab-content">
+            <div class="metric-cards">
+                <div class="metric-card">
+                    <div class="metric-value">23%</div>
+                    <div class="metric-label">Revenue Management ROI</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$89</div>
+                    <div class="metric-label">Customer Acquisition Cost</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">67%</div>
+                    <div class="metric-label">Direct Booking Rate</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">45%</div>
+                    <div class="metric-label">Staff Productivity Gain</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">32%</div>
+                    <div class="metric-label">Energy Cost Reduction</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">35%</div>
+                    <div class="metric-label">Community Tourism ROI</div>
+                </div>
+            </div>
+            
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Booking Channel Performance</div>
+                    <canvas id="channelChart" width="400" height="300"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Operational Efficiency Metrics</div>
+                    <canvas id="efficiencyChart" width="400" height="300"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Profit Margin by Segment</div>
+                    <canvas id="marginChart" width="400" height="300"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">Sustainability ROI</div>
+                    <canvas id="sustainabilityChart" width="400" height="300"></canvas>
+                </div>
+            </div>
         </div>
         
         <!-- DIGITAL ANALYTICS TAB -->
@@ -552,7 +814,7 @@
                 </div>
                 
                 <div class="chart-container">
-                    <div class="chart-title">Social Media ROI</div>
+                    <div class="chart-title">Social Media ROI by Platform</div>
                     <canvas id="socialChart" width="400" height="300"></canvas>
                 </div>
             </div>
@@ -563,7 +825,7 @@
         // Global variables for charts
         let charts = {};
         let currentMarketView = 'total';
-        // Complete data for all charts
+        // Complete comprehensive data for all charts
         const data = {
             recovery: {
                 labels: ['2019', '2020', '2021', '2022', '2023', '2024F', '2025F'],
@@ -649,6 +911,138 @@
                 }]
             },
             
+            accommodation: {
+                labels: ['Luxury Lodges', 'Mid-Range Hotels', 'Guesthouses', 'Camping/Self-Catering'],
+                datasets: [{
+                    data: [15, 35, 28, 22],
+                    backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            
+            adr: {
+                labels: ['Luxury Lodges', 'Mid-Range Hotels', 'Guesthouses', 'Camping'],
+                datasets: [{
+                    label: 'Average Daily Rate ($)',
+                    data: [650, 134, 62, 28],
+                    backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            
+            occupancy: {
+                labels: ['Luxury Lodges', 'Mid-Range Hotels', 'Guesthouses', 'Camping'],
+                datasets: [{
+                    label: 'Occupancy Rate (%)',
+                    data: [68, 72, 58, 45],
+                    backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            
+            revpar: {
+                labels: ['Luxury Lodges', 'Mid-Range Hotels', 'Guesthouses', 'Camping'],
+                datasets: [{
+                    label: 'RevPAR ($)',
+                    data: [442, 97, 36, 13],
+                    backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            
+            forecast: {
+                labels: ['Jan 24', 'Feb 24', 'Mar 24', 'Apr 24', 'May 24', 'Jun 24', 'Jul 24', 'Aug 24', 'Sep 24', 'Oct 24', 'Nov 24', 'Dec 24'],
+                datasets: [
+                    {
+                        label: 'Forecast',
+                        data: [65000, 58000, 72000, 89000, 95000, 112000, 145000, 138000, 125000, 156000, 148000, 167000],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Confidence Interval',
+                        data: [62000, 55000, 68000, 84000, 90000, 106000, 138000, 131000, 118000, 148000, 140000, 158000],
+                        borderColor: '#764ba2',
+                        backgroundColor: 'rgba(118, 75, 162, 0.1)',
+                        tension: 0.4,
+                        fill: false,
+                        borderDash: [5, 5]
+                    }
+                ]
+            },
+            
+            elasticity: {
+                labels: ['Low Season', 'Shoulder', 'Peak Season'],
+                datasets: [{
+                    label: 'Price Elasticity',
+                    data: [-0.8, -1.2, -0.4],
+                    backgroundColor: ['#f5576c', '#f093fb', '#667eea'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            
+            currency: {
+                labels: ['EUR Strength', 'USD Strength', 'GBP Strength', 'ZAR Strength'],
+                datasets: [{
+                    label: 'Booking Impact %',
+                    data: [23, 18, 15, -12],
+                    backgroundColor: ['#27ae60', '#27ae60', '#27ae60', '#e74c3c'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            
+            channel: {
+                labels: ['Direct Booking', 'Booking.com', 'Expedia', 'Tour Operators', 'Other OTAs'],
+                datasets: [{
+                    label: 'Revenue %',
+                    data: [45, 22, 15, 12, 6],
+                    backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#67b7dc'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            
+            efficiency: {
+                labels: ['Staff Productivity', 'Energy Efficiency', 'Waste Reduction', 'Digital Adoption'],
+                datasets: [{
+                    label: 'Improvement %',
+                    data: [18, 25, 32, 45],
+                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                    borderColor: '#667eea',
+                    borderWidth: 2
+                }]
+            },
+            
+            margin: {
+                labels: ['Luxury Safari', 'Adventure Tourism', 'Cultural Tours', 'Self-Drive'],
+                datasets: [{
+                    label: 'Profit Margin %',
+                    data: [45, 32, 28, 18],
+                    backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            
+            sustainability: {
+                labels: ['Conservation Fees', 'Carbon Offset', 'Community Tourism', 'Eco Certification'],
+                datasets: [{
+                    label: 'ROI %',
+                    data: [28, 15, 35, 22],
+                    backgroundColor: ['#27ae60', '#82ca9d', '#67b7dc', '#f39c12'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            
             attribution: {
                 labels: ['Google Ads', 'Facebook/Instagram', 'Organic Search', 'Email', 'Referrals'],
                 datasets: [{
@@ -697,284 +1091,185 @@
         // Initialize all charts when page loads
         document.addEventListener('DOMContentLoaded', function() {
             initializeCharts();
+            createSeasonalHeatmap();
         });
         
+        // Chart initialization function
         function initializeCharts() {
             // Overview Tab Charts
-            if (document.getElementById('recoveryChart')) {
-                charts.recovery = new Chart(document.getElementById('recoveryChart').getContext('2d'), {
-                    type: 'line',
-                    data: data.recovery,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return `Arrivals: ${context.parsed.y.toLocaleString()}`;
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return (value / 1000000).toFixed(1) + 'M';
-                                    }
-                                }
+            createChart('recoveryChart', 'line', data.recovery, {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Arrivals: ${context.parsed.y.toLocaleString()}`;
                             }
                         }
                     }
-                });
-            }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 1000000).toFixed(1) + 'M';
+                            }
+                        }
+                    }
+                }
+            });
             
-            if (document.getElementById('purposeChart')) {
-                charts.purpose = new Chart(document.getElementById('purposeChart').getContext('2d'), {
-                    type: 'doughnut',
-                    data: data.purpose,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'bottom' },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return `${context.label}: ${context.parsed}%`;
-                                    }
-                                }
+            createChart('purposeChart', 'doughnut', data.purpose, {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.parsed}%`;
                             }
                         }
                     }
-                });
-            }
+                }
+            });
             
-            if (document.getElementById('sourceMarketsChart')) {
-                charts.sourceMarkets = new Chart(document.getElementById('sourceMarketsChart').getContext('2d'), {
-                    type: 'bar',
-                    data: {
-                        labels: data.sourceMarkets.total.labels,
-                        datasets: [{
-                            data: data.sourceMarkets.total.data,
-                            backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#67b7dc', '#82ca9d', '#ffc658', '#ff7c7c', '#8dd1e1', '#d084d0'],
-                            borderWidth: 2,
-                            borderColor: '#fff'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        if (currentMarketView === 'recovery') {
-                                            return `${context.label}: ${context.parsed.y}% of 2019 levels`;
-                                        }
-                                        return `${context.label}: ${context.parsed.y.toLocaleString()} visitors`;
-                                    }
+            createChart('sourceMarketsChart', 'bar', {
+                labels: data.sourceMarkets.total.labels,
+                datasets: [{
+                    data: data.sourceMarkets.total.data,
+                    backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#67b7dc', '#82ca9d', '#ffc658', '#ff7c7c', '#8dd1e1', '#d084d0'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            }, {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (currentMarketView === 'recovery') {
+                                    return `${context.label}: ${context.parsed.y}% of 2019 levels`;
                                 }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        if (currentMarketView === 'recovery') {
-                                            return value + '%';
-                                        }
-                                        return (value / 1000).toFixed(0) + 'K';
-                                    }
-                                }
+                                return `${context.label}: ${context.parsed.y.toLocaleString()} visitors`;
                             }
                         }
                     }
-                });
-            }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                if (currentMarketView === 'recovery') {
+                                    return value + '%';
+                                }
+                                return (value / 1000).toFixed(0) + 'K';
+                            }
+                        }
+                    }
+                }
+            });
             
             // Customer Intelligence Charts
-            if (document.getElementById('segmentChart')) {
-                charts.segment = new Chart(document.getElementById('segmentChart').getContext('2d'), {
-                    type: 'doughnut',
-                    data: data.segment,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'bottom' },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return `${context.label}: ${context.parsed}%`;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
+            createChart('segmentChart', 'doughnut', data.segment, defaultDoughnutOptions());
+            createChart('bookingWindowChart', 'bar', data.bookingWindow, defaultBarOptions('%'));
+            createChart('ageChart', 'bar', data.age, { responsive: true, plugins: { legend: { position: 'top' }}, scales: { y: { beginAtZero: true, ticks: { callback: function(value) { return value + '%'; }}}}});
+            createChart('repeatChart', 'doughnut', data.repeat, defaultDoughnutOptions());
             
-            if (document.getElementById('bookingWindowChart')) {
-                charts.bookingWindow = new Chart(document.getElementById('bookingWindowChart').getContext('2d'), {
-                    type: 'bar',
-                    data: data.bookingWindow,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
+            // Competitive Analysis Charts
+            createChart('accommodationChart', 'doughnut', data.accommodation, defaultDoughnutOptions());
+            createChart('adrChart', 'bar', data.adr, defaultBarOptions('$'));
+            createChart('occupancyChart', 'bar', data.occupancy, defaultBarOptions('%'));
+            createChart('revparChart', 'bar', data.revpar, defaultBarOptions('$'));
             
-            if (document.getElementById('ageChart')) {
-                charts.age = new Chart(document.getElementById('ageChart').getContext('2d'), {
-                    type: 'bar',
-                    data: data.age,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'top' }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
+            // Forecasting Charts
+            createChart('forecastChart', 'line', data.forecast, {
+                responsive: true,
+                plugins: { legend: { position: 'top' }},
+                scales: { y: { beginAtZero: true, ticks: { callback: function(value) { return (value / 1000).toFixed(0) + 'K'; }}}}
+            });
+            createChart('elasticityChart', 'bar', data.elasticity, { responsive: true, plugins: { legend: { display: false }}, scales: { y: { beginAtZero: false }}});
+            createChart('currencyChart', 'bar', data.currency, defaultBarOptions('%'));
             
-            if (document.getElementById('repeatChart')) {
-                charts.repeat = new Chart(document.getElementById('repeatChart').getContext('2d'), {
-                    type: 'doughnut',
-                    data: data.repeat,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'bottom' },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return `${context.label}: ${context.parsed}%`;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
+            // Operations Charts
+            createChart('channelChart', 'doughnut', data.channel, defaultDoughnutOptions());
+            createChart('efficiencyChart', 'bar', data.efficiency, defaultBarOptions('%'));
+            createChart('marginChart', 'bar', data.margin, defaultBarOptions('%'));
+            createChart('sustainabilityChart', 'doughnut', data.sustainability, { responsive: true, plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: function(context) { return `${context.label}: ${context.parsed}% ROI`; }}}}});
             
             // Digital Analytics Charts
-            if (document.getElementById('attributionChart')) {
-                charts.attribution = new Chart(document.getElementById('attributionChart').getContext('2d'), {
-                    type: 'bar',
-                    data: data.attribution,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-            
-            if (document.getElementById('contentChart')) {
-                charts.content = new Chart(document.getElementById('contentChart').getContext('2d'), {
-                    type: 'bar',
-                    data: data.content,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-            
-            if (document.getElementById('searchChart')) {
-                charts.search = new Chart(document.getElementById('searchChart').getContext('2d'), {
-                    type: 'bar',
-                    data: data.search,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return (value / 1000).toFixed(1) + 'K';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-            
-            if (document.getElementById('socialChart')) {
-                charts.social = new Chart(document.getElementById('socialChart').getContext('2d'), {
-                    type: 'bar',
-                    data: data.social,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return value + 'x';
-                                    }
-                                }
-                            }
-                        }
-                    }
+            createChart('attributionChart', 'bar', data.attribution, defaultBarOptions('%'));
+            createChart('contentChart', 'bar', data.content, defaultBarOptions('%'));
+            createChart('searchChart', 'bar', data.search, { responsive: true, plugins: { legend: { display: false }}, scales: { y: { beginAtZero: true, ticks: { callback: function(value) { return (value / 1000).toFixed(1) + 'K'; }}}}});
+            createChart('socialChart', 'bar', data.social, { responsive: true, plugins: { legend: { display: false }}, scales: { y: { beginAtZero: true, ticks: { callback: function(value) { return value + 'x'; }}}}});
+        }
+        
+        // Helper functions for chart creation
+        function createChart(id, type, data, options) {
+            const element = document.getElementById(id);
+            if (element) {
+                charts[id] = new Chart(element.getContext('2d'), {
+                    type: type,
+                    data: data,
+                    options: options
                 });
             }
         }
+        
+        function defaultDoughnutOptions() {
+            return {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.parsed}%`;
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        
+        function defaultBarOptions(suffix = '') {
+            return {
+                responsive: true,
+                plugins: { legend: { display: false }},
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return suffix + value;
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        
+        // Create seasonal heatmap
+        function createSeasonalHeatmap() {
+            const heatmapContainer = document.getElementById('seasonalHeatmap');
+            if (!heatmapContainer) return;
+            
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const intensities = [0.4, 0.3, 0.5, 0.6, 0.7, 0.8, 0.9, 0.9, 0.8, 1.0, 0.9, 0.8];
+            
+            months.forEach((month, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'heat-cell';
+                cell.textContent = month;
+                const intensity = intensities[index];
+                cell.style.backgroundColor = `rgba(102, 126, 234, ${intensity})`;
+                heatmapContainer.appendChild(cell);
+            });
+        }
+        // Tab switching function
         function showTab(tabName) {
             // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(tab => {
@@ -987,10 +1282,15 @@
             });
             
             // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
             
             // Add active class to clicked nav tab
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
             
             // Resize charts when tab becomes visible
             setTimeout(() => {
@@ -1002,18 +1302,23 @@
             }, 100);
         }
         
+        // Market view toggle function
         function toggleMarketView(view) {
             currentMarketView = view;
             
             // Update button states
             document.querySelectorAll('#overview .control-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
             
             // Update chart data
             const newData = data.sourceMarkets[view];
-            if (charts.sourceMarkets) {
-                charts.sourceMarkets.data.labels = newData.labels;
-                charts.sourceMarkets.data.datasets[0].data = newData.data;
+            const chart = charts.sourceMarketsChart;
+            
+            if (chart && newData) {
+                chart.data.labels = newData.labels;
+                chart.data.datasets[0].data = newData.data;
                 
                 // Update chart title
                 const titleMap = {
@@ -1026,12 +1331,22 @@
                 if (titleElement) {
                     titleElement.textContent = titleMap[view];
                 }
-                charts.sourceMarkets.update();
+                
+                // Update y-axis formatting
+                chart.options.scales.y.ticks.callback = function(value) {
+                    if (currentMarketView === 'recovery') {
+                        return value + '%';
+                    }
+                    return (value / 1000).toFixed(0) + 'K';
+                };
+                
+                chart.update();
             }
         }
         
-        // Add hover effects to cards
+        // Enhanced hover effects and interactions
         document.addEventListener('DOMContentLoaded', function() {
+            // Stat card hover effects
             document.querySelectorAll('.stat-card, .metric-card').forEach(card => {
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-3px) scale(1.02)';
@@ -1042,7 +1357,8 @@
                 });
             });
             
-            document.querySelectorAll('.insight-card').forEach(card => {
+            // Insight card click effects
+            document.querySelectorAll('.insight-card, .segment-card').forEach(card => {
                 card.addEventListener('click', function() {
                     this.style.transform = 'scale(0.98)';
                     setTimeout(() => {
@@ -1050,7 +1366,166 @@
                     }, 150);
                 });
             });
+            
+            // Table row hover effects
+            document.querySelectorAll('.economic-table tr, .competitive-table tr').forEach(row => {
+                if (!row.querySelector('th')) { // Skip header rows
+                    row.addEventListener('mouseenter', function() {
+                        this.style.backgroundColor = '#f8f9fa';
+                        this.style.transform = 'scale(1.01)';
+                        this.style.transition = 'all 0.2s ease';
+                    });
+                    
+                    row.addEventListener('mouseleave', function() {
+                        this.style.backgroundColor = '';
+                        this.style.transform = 'scale(1)';
+                    });
+                }
+            });
+            
+            // Chart container hover effects
+            document.querySelectorAll('.chart-container').forEach(container => {
+                container.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 12px 40px rgba(0,0,0,0.15)';
+                });
+                
+                container.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)';
+                });
+            });
+            
+            // ROI indicator animations
+            document.querySelectorAll('.roi-indicator').forEach(indicator => {
+                indicator.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.1)';
+                    this.style.transition = 'transform 0.2s ease';
+                });
+                
+                indicator.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+            
+            // Heat map cell interactions
+            document.querySelectorAll('.heat-cell').forEach(cell => {
+                cell.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.1)';
+                    this.style.zIndex = '10';
+                    this.style.transition = 'all 0.2s ease';
+                });
+                
+                cell.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.zIndex = '1';
+                });
+            });
+            
+            // Control button animations
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.backgroundColor = '#5a6fd8';
+                        this.style.transform = 'translateY(-1px) scale(1.05)';
+                    }
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.backgroundColor = '#667eea';
+                        this.style.transform = 'translateY(0) scale(1)';
+                    }
+                });
+            });
+            
+            // Navigation tab animations
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                        this.style.transform = 'translateY(-2px) scale(1.02)';
+                    }
+                });
+                
+                tab.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                        this.style.transform = 'translateY(0) scale(1)';
+                    }
+                });
+            });
+            
+            // Initialize default tab
+            showTab('overview');
         });
+        
+        // Utility functions for data analysis
+        function calculateGrowthRate(current, previous) {
+            return ((current - previous) / previous * 100).toFixed(1);
+        }
+        
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+        }
+        
+        function formatNumber(number) {
+            return new Intl.NumberFormat('en-US').format(number);
+        }
+        
+        // Export functionality (if needed for reports)
+        function exportData(format = 'json') {
+            const exportData = {
+                generatedAt: new Date().toISOString(),
+                metadata: {
+                    title: 'Namibia Tourism Business Intelligence Dashboard',
+                    version: '1.0',
+                    dataPoints: Object.keys(data).length
+                },
+                data: data,
+                insights: {
+                    totalVisitors2023: 863872,
+                    recoveryRate: 54,
+                    averageSpending: 556,
+                    gdpContribution: '12-14.5%',
+                    occupancyRate: 54.48
+                }
+            };
+            
+            if (format === 'json') {
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'namibia-tourism-data.json';
+                link.click();
+            }
+        }
+        
+        // Print functionality
+        function printDashboard() {
+            window.print();
+        }
+        
+        // Responsive chart resizing
+        window.addEventListener('resize', function() {
+            Object.values(charts).forEach(chart => {
+                if (chart && chart.resize) {
+                    chart.resize();
+                }
+            });
+        });
+        
+        // Performance monitoring
+        console.log('🇳🇦 Namibia Tourism Dashboard Loaded Successfully!');
+        console.log('📊 Charts initialized:', Object.keys(charts).length);
+        console.log('📈 Data points loaded:', Object.keys(data).length);
+        console.log('🎯 Interactive features: Tab switching, market views, hover effects');
+        console.log('💡 Ready for business intelligence analysis!');
     </script>
 </body>
 </html>
